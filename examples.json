@@ -8,7 +8,7 @@
     "question": "We're seeing 'too many connections' errors on checkout-api - what's the likely cause?",
     "expected": ["RB-002"],
     "source": "official",
-    "note": "Citing RB-012 as a secondary source is acceptable per the prompt, not required."
+    "note": "Citing RB-011 as a secondary source is acceptable per the prompt, not required."
   },
   {
     "question": "How do I safely roll back checkout-api to a previous version?",

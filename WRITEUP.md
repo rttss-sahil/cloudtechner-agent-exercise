@@ -64,7 +64,7 @@ is deterministic: same question → same result, reproducible harness.
   fewer junk docs) they need re-calibration — the harness makes this visible per
   case.
 - **Single citation.** The agent cites one top doc. The prompt allows citing
-  `RB-012` *in addition* to `RB-002` for the connections question; my single-doc
+  `RB-011` *in addition* to `RB-002` for the connections question; my single-doc
   contract satisfies the letter of the spec but a multi-doc variant (top-k with a
   margin threshold) is a natural extension.
 - **Cross-document answers.** Questions whose answer genuinely spans two docs

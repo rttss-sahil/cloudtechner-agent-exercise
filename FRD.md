@@ -34,7 +34,7 @@ The returned dict MUST contain exactly these keys:
 | Key | Type | Example |
 |---|---|---|
 | `answer` | str | Natural-language answer, grounded in citations |
-| `cited_doc_ids` | list[str] | `["RB-002", "RB-012"]` — may be `[]` |
+| `cited_doc_ids` | list[str] | `["RB-002", "RB-011"]` — may be `[]` |
 | `confidence` | str | one of `"high"`, `"medium"`, `"low"`, `"no match"` |
 
 ### FR-3 — Citation discipline
@@ -69,11 +69,13 @@ The returned dict MUST contain exactly these keys:
 ### FR-7 — Example suite
 - The harness MUST be preloaded with the 5 official example questions + expected doc IDs:
   1. "checkout-api is running hot on CPU — what should I check first?" → `["RB-001"]`
-  2. "'too many connections' errors on checkout-api — likely cause?" → `["RB-002"]` (citing `RB-012` also good, not required)
+  2. "'too many connections' errors on checkout-api — likely cause?" → `["RB-002"]` (citing `RB-011` also good, not required)
   3. "How do I safely roll back checkout-api?" → `["RB-005"]`
-  4. "checkout-api incident on 2026-08-10 — root cause and fix?" → `["RB-011"]`
-  5. "What's our policy for communicating an incident to customers?" → `["RB-012"]`
-- Note: OCR of the screenshot garbled rows 4–5; VERIFY the exact expected IDs against the original assignment PDF before running.
+  4. "checkout-api incident on 2026-08-10 — root cause and fix?" → `["RB-012"]`
+  5. "What's our policy for communicating an incident to customers?" → `["RB-011"]`
+- Note: OCR of the screenshot garbled rows 4–5; the IDs above follow the assessment
+  table (incident postmortem = RB-012, customer-communication policy = RB-011) as
+  cross-checked against the rubric and the bundled mock corpus.
 - Harness output against these 5 MUST be included in the deliverable.
 
 ### FR-8 — Retrieval approach (choice is open)
