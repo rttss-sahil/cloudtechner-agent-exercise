@@ -60,9 +60,9 @@ is deterministic: same question → same result, reproducible harness.
   in config covers a few synonyms; the general fix would be an embedding reranker
   layered on top of this lexical core.
 - **Threshold sensitivity.** `MATCH_FLOOR`/`CONF_*` are absolute cutoffs tuned on
-  the sample corpus. On a very different corpus (longer/shorter docs, more or
-  fewer junk docs) they need re-calibration — the write-up documents this and the
-  harness makes it visible per case.
+  the mock corpus. On a very different corpus (longer/shorter docs, more or
+  fewer junk docs) they need re-calibration — the harness makes this visible per
+  case.
 - **Single citation.** The agent cites one top doc. The prompt allows citing
   `RB-012` *in addition* to `RB-002` for the connections question; my single-doc
   contract satisfies the letter of the spec but a multi-doc variant (top-k with a
@@ -70,8 +70,8 @@ is deterministic: same question → same result, reproducible harness.
 - **Cross-document answers.** Questions whose answer genuinely spans two docs
   (e.g., policy in one, severity in another) would need multi-doc answer
   synthesis, not just top-1 grounding.
-- **No conversational memory / no structured query parsing.** If the real corpus
-  has YAML/JSON parameter sections, entity extraction could be sharpened to
+- **No conversational memory / no structured query parsing.** If the corpus gains
+  YAML/JSON parameter sections, entity extraction could be sharpened to
   parse those fields explicitly.
 
 ## Confidence mapping
@@ -114,7 +114,7 @@ actually exercised, not just assumed.
 ## Running
 
 ```bash
-python3 scripts/make_sample_corpus.py   # seed sample runbooks/ (smoke test only)
-python3 harness.py                      # evaluate 11 cases -> output/harness_output.txt
+python3 scripts/make_sample_corpus.py   # generate the mock runbooks/ corpus
+python3 eval_harness.py                 # evaluate 11 cases -> output/harness_output.txt
 python3 main.py -q "<question>"         # single query
 ```

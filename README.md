@@ -13,6 +13,26 @@ when no runbook actually applies — citations are never forced onto a
 closest-sounding doc. The string is verbatim-spec: the assignment defines the
 value as `"no match"` (with a space), so the API returns exactly that.
 
+## Live prototype & deliverables checklist
+
+Everything ships in three places: the **repo** (source + docs), the **live Worker**
+(working prototype), and committed **harness output** (evidence).
+
+| # | Deliverable (per assignment) | Where |
+|---|---|---|
+| 1 | Agent code (Python, runnable) | `cloudtech_rag/`, `main.py`, `worker/` (TypeScript port) |
+| 2 | Evaluation harness (runnable) | `harness.py` + `eval_harness.py` — `python3 eval_harness.py` |
+| 3 | Harness output vs. the 5 sample questions | `output/harness_output.txt` (committed) |
+| 4 | Repo/zip with code + output + run instructions | GitHub: https://github.com/rttss-sahil/cloudtechner-agent-exercise |
+| 5 | Working prototype | Live: https://cloudtechner-rag.infortts.workers.dev |
+
+**Live web app** (`https://cloudtechner-rag.infortts.workers.dev`):
+- `GET /` — UI (ask a question, browse the 12 mock runbooks, click citations to open docs)
+- `POST /api/answer` — `{"question": "…"}` → `{answer, cited_doc_ids, confidence}`
+- `GET /api/docs` / `GET /api/docs/:id` — corpus list / single runbook
+- `GET /api/answer?q=…&debug=1` — plus ranked retrieval diagnostics
+- Repo link is surfaced in the UI footer of the page.
+
 ## Layout
 
 | Path | Purpose |
@@ -25,7 +45,7 @@ value as `"no match"` (with a space), so the API returns exactly that.
 | `output/harness_output.txt` | harness report (latest run) |
 | `WRITEUP.md` | design rationale: why this retrieval, what it handles / doesn't |
 | `FRD.md` | functional requirements document |
-| `scripts/make_sample_corpus.py` | generates the synthetic smoke-test corpus |
+| `scripts/make_sample_corpus.py` | generates the mock corpus (per HR guidance: "use mock data") |
 
 ## Quick start
 
@@ -127,5 +147,6 @@ export const onRequest: PagesFunction = async ({ request }) => {
 ```
 
 Same code, same engine — the handler is `request`-shaped so it drops into either
-runtime. When the real runbooks arrive, swap `../runbooks` and re-run
-`npm run parity`; if a case flips, tune `src/config.ts` thresholds.
+runtime. The mock corpus is already the official corpus (per HR); if you later
+swap in different runbooks, re-run `npm run parity` and tune `src/config.ts`
+thresholds if a case flips.

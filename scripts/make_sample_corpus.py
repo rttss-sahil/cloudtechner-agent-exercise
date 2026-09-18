@@ -1,11 +1,10 @@
-"""Generate a SAMPLE runbooks/ corpus for smoke-testing the pipeline.
+"""Generate the MOCK runbooks/ corpus (canonical per HR guidance: "use mock data").
 
-Only used until the real CloudTechner runbooks/ arrive. The docs deliberately
-mirror the traps described in the assignment: near-duplicate structures across
-checkout-api / payments-api / inventory-api, one dated incident postmortem, and
-one customer-communication policy. Remember to DELETE this sample set (or drop
-the real runbooks/ over it) before submitting so the harness runs against the
-real corpus.
+The docs deliberately mirror the traps described in the assignment:
+near-duplicate structures across checkout-api / payments-api / inventory-api,
+one dated incident postmortem (RB-012), and one customer-communication policy
+(RB-011). Regenerating this file overwrites runbooks/ with the exact corpus used
+by the harness and the deployed Worker.
 """
 
 import re
@@ -162,7 +161,7 @@ def main() -> None:
         content = TEMPLATE.format(**body)
         (DEST / f"{doc_id}.md").write_text(content, encoding="utf-8")
     print(f"Wrote {len(DOCS)} sample runbooks to {DEST}")
-    print("NOTE: replace these with the real CloudTechner corpus before submission.")
+    print("NOTE: runbooks/ is the official corpus (HR: \"use mock data\"). Re-run the harness after a regen.")
 
 
 if __name__ == "__main__":
