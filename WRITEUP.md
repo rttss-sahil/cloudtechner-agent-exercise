@@ -23,7 +23,7 @@ This is fundamentally a **retrieval precision** problem, not a generation proble
   the exact failure-mode phrasing like `too many connections`).
 - **Character 3-gram Jaccard** — tolerates inflection/wording variance
   (`running hot` vs `hot on CPU`) where exact tokens diverge.
-- **Service-grounding gate** — the core defense against the traps. Service names
+- **Service-grounding penalty** — the core defense against the traps. Service names
   are extracted from the question (`*-api` tokens + optional aliases) and any
   candidate doc that never mentions the asked-about service is heavily demoted
   (~0.35x). A near-duplicate of RB-001 about `payments-api` therefore cannot win
@@ -48,7 +48,7 @@ is deterministic: same question → same result, reproducible harness.
 ## What it handles well
 
 - Exact failure-mode lookups (`too many connections`, `high CPU`, `roll back`).
-- Wrong-service traps: the grounding gate demotes the other service's near-dupe.
+- Wrong-service traps: the service-grounding penalty demotes the other service's near-dupe.
 - Clear no-match cases: threshold-gated, out-of-corpus questions return
   `no match` with empty citations (verified with 5 adversarial questions).
 - Explainability: every answer traces to a doc id + the best matching paragraph.
