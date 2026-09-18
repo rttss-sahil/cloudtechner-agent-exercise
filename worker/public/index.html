@@ -58,6 +58,8 @@
       <div id="doc-view" class="hidden"></div>
     </section>
 
+    <footer style="margin-top:36px;color:var(--dim);font-size:12px"><span id="ver">loading deploy id…</span></footer>
+
     <script>
       const f = document.getElementById("f");
       const q = document.getElementById("q");
@@ -136,6 +138,11 @@
 
       f.addEventListener("submit", (e) => { e.preventDefault(); if (q.value.trim()) ask(q.value.trim()); });
       if (q.value.trim()) ask(q.value.trim());
+
+      fetch("/api/version").then((r) => r.json()).then((v) => {
+        const at = (v.deployedAt || "").slice(0, 16).replace("T", " ") + " UTC";
+        document.getElementById("ver").textContent = `live deploy ${v.commit} · built ${at} · ${v.corpus.docs} runbooks`;
+      }).catch(() => { document.getElementById("ver").textContent = ""; });
     </script>
   </main>
 </body>

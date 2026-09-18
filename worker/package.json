@@ -5,7 +5,7 @@
   "type": "module",
   "description": "Stateless Cloudflare Worker port of the CloudTechner runbooks RAG agent",
   "scripts": {
-    "build:data": "node scripts/build-data.mjs ../runbooks src/data/runbooks.ts",
+    "build:data": "node scripts/build-data.mjs ../runbooks src/data/runbooks.ts && node scripts/build-version.mjs",
     "parity": "npm run build:data && node --experimental-strip-types scripts/parity.mjs",
     "dev": "npm run build:data && wrangler dev",
     "typecheck": "tsc --noEmit",

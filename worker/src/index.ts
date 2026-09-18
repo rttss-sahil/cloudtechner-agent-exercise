@@ -9,6 +9,7 @@
 
 import { Agent, docTitle } from "./agent.ts";
 import { RUNBOOKS } from "./data/runbooks.ts";
+import { VERSION } from "./data/version.ts";
 
 let globalAgent: Agent | null = null;
 
@@ -30,7 +31,21 @@ const CORS = {
 const JSON_HEADERS = { "Content-Type": "application/json; charset=utf-8", ...CORS };
 
 function json(body: unknown, status = 200): Response {
-  return new Response(JSON.stringify(body), { status, headers: JSON_HEADERS });
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: { ...JSON_HEADERS, "X-Deploy-Commit": VERSION.commit },
+  });
+}
+
+// GET /api/version -> {commit, deployedAt, engine, corpus} so any deployed build
+// can be correlated to the exact source revision in the repo.
+function handleVersion(): Response {
+  return json({
+    commit: VERSION.commit,
+    deployedAt: VERSION.deployedAt,
+    engine: "hybrid lexical retrieval (TF-IDF cosine + token Jaccard + 3-gram Jaccard + service-grounding penalty)",
+    corpus: { docs: RUNBOOKS.length, ids: RUNBOOKS.map((d) => d.id) },
+  });
 }
 
 // GET  /api/docs        -> [{id, name, title}] for all bundled runbooks
@@ -84,11 +99,18 @@ export default {
       return handleAnswer(request, url.searchParams.get("debug") === "1");
     }
 
+    if (url.pathname === "/api/version") {
+      return handleVersion();
+    }
+
     if (url.pathname === "/api/docs" || url.pathname.startsWith("/api/docs/")) {
       return handleDocs(url);
     }
 
     // Everything else: serve the static UI from ./public (Pages-style).
-    return env.ASSETS.fetch(request);
+    const res = await env.ASSETS.fetch(request);
+    const headers = new Headers(res.headers);
+    headers.set("X-Deploy-Commit", VERSION.commit);
+    return new Response(res.body, { status: res.status, headers });
   },
 };
