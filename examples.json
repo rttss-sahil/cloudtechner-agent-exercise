@@ -17,12 +17,12 @@
   },
   {
     "question": "We had a checkout-api incident on 2026-08-10 - what was the root cause and how was it fixed?",
-    "expected": ["RB-011"],
+    "expected": ["RB-012"],
     "source": "official"
   },
   {
     "question": "What's our policy for communicating an incident to customers?",
-    "expected": ["RB-012"],
+    "expected": ["RB-011"],
     "source": "official"
   },
   {

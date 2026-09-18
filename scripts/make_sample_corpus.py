@@ -128,6 +128,16 @@ DOCS: dict[str, str] = {
                "4. Declare S1 immediately when customer impact is broad."),
     ),
     "RB-011": dict(
+        title="Customer Communication During Incidents",
+        overview=("Guidelines for communicating with customers during incidents. Customers "
+                  "are informed via the status page and email for S1/S2 incidents."),
+        symptoms="Communicating an ongoing incident to customers.",
+        steps=("1. Publish status-page update within 15 minutes of S1/S2 declaration.\n"
+               "2. State impacted services, start time, and next update time.\n"
+               "3. Post an update every 30 minutes until resolved.\n"
+               "4. After resolution, send a postmortem summary email within 24h."),
+    ),
+    "RB-012": dict(
         title="Incident Postmortem 2026-08-10 (checkout-api outage)",
         overview=("On 2026-08-10 checkout-api was down for 47 minutes. Root cause was a "
                   "deploy that shipped an incompatible DB migration; the fix was a rollback "
@@ -138,16 +148,6 @@ DOCS: dict[str, str] = {
                "3. 09:41 rollback executed; service restored 09:59.\n"
                "4. Follow-up: backward-compatibility gate added to the deploy pipeline; "
                "orders reconciled via data-fix queue."),
-    ),
-    "RB-012": dict(
-        title="Customer Communication During Incidents",
-        overview=("Guidelines for communicating with customers during incidents. Customers "
-                  "are informed via the status page and email for S1/S2 incidents."),
-        symptoms="Communicating an ongoing incident to customers.",
-        steps=("1. Publish status-page update within 15 minutes of S1/S2 declaration.\n"
-               "2. State impacted services, start time, and next update time.\n"
-               "3. Post an update every 30 minutes until resolved.\n"
-               "4. After resolution, send a postmortem summary email within 24h."),
     ),
 }
 

@@ -56,11 +56,11 @@ export const RUNBOOKS: Doc[] = [
   {
     "id": "RB-011",
     "name": "RB-011.md",
-    "text": "# Incident Postmortem 2026-08-10 (checkout-api outage)\n\n## Overview\nOn 2026-08-10 checkout-api was down for 47 minutes. Root cause was a deploy that shipped an incompatible DB migration; the fix was a rollback plus a data-fix ticket to reconcile dropped orders.\n\n## Symptoms\ncheckout-api 503s; orders stuck in 'processing'; payment links failed.\n\n## Steps\n1. Deploy 2026-08-10 09:12 pushed an incompatible migration.\n2. 09:18 error rates rose; incident declared at 09:21 (S1).\n3. 09:41 rollback executed; service restored 09:59.\n4. Follow-up: backward-compatibility gate added to the deploy pipeline; orders reconciled via data-fix queue.\n"
+    "text": "# Customer Communication During Incidents\n\n## Overview\nGuidelines for communicating with customers during incidents. Customers are informed via the status page and email for S1/S2 incidents.\n\n## Symptoms\nCommunicating an ongoing incident to customers.\n\n## Steps\n1. Publish status-page update within 15 minutes of S1/S2 declaration.\n2. State impacted services, start time, and next update time.\n3. Post an update every 30 minutes until resolved.\n4. After resolution, send a postmortem summary email within 24h.\n"
   },
   {
     "id": "RB-012",
     "name": "RB-012.md",
-    "text": "# Customer Communication During Incidents\n\n## Overview\nGuidelines for communicating with customers during incidents. Customers are informed via the status page and email for S1/S2 incidents.\n\n## Symptoms\nCommunicating an ongoing incident to customers.\n\n## Steps\n1. Publish status-page update within 15 minutes of S1/S2 declaration.\n2. State impacted services, start time, and next update time.\n3. Post an update every 30 minutes until resolved.\n4. After resolution, send a postmortem summary email within 24h.\n"
+    "text": "# Incident Postmortem 2026-08-10 (checkout-api outage)\n\n## Overview\nOn 2026-08-10 checkout-api was down for 47 minutes. Root cause was a deploy that shipped an incompatible DB migration; the fix was a rollback plus a data-fix ticket to reconcile dropped orders.\n\n## Symptoms\ncheckout-api 503s; orders stuck in 'processing'; payment links failed.\n\n## Steps\n1. Deploy 2026-08-10 09:12 pushed an incompatible migration.\n2. 09:18 error rates rose; incident declared at 09:21 (S1).\n3. 09:41 rollback executed; service restored 09:59.\n4. Follow-up: backward-compatibility gate added to the deploy pipeline; orders reconciled via data-fix queue.\n"
   }
 ];

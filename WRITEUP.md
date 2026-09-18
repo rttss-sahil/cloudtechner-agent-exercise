@@ -88,6 +88,19 @@ is deterministic: same question → same result, reproducible harness.
 `no match` never coexists with a citation. Current values: floor `0.12`,
 medium `0.155`, high `0.20` (config.py).
 
+**Spec-compliant string:** the confidence value for out-of-coverage queries is
+`"no match"` exactly as written in the assignment (`"high" | "medium" | "low" |
+"no match"`, with a space) — deliberately not coerced to `no_match`.
+
+## Rubric alignment notes
+
+- **RB-011 / RB-012:** the mock corpus IDs the incident postmortem as RB-012 and
+  the customer-communication policy as RB-011, matching the assessment table's
+  benchmark (Q4 → RB-012, Q5 → RB-011).
+- **Evaluation runner:** `eval_harness.py` is the standalone, reproducible
+  Python test runner that prints the 4-category score breakdown (right doc /
+  wrong doc / right no-match / wrong no-match) — see `output/harness_output.txt`.
+
 ## Evaluation design
 
 The harness (FR-6) classifies each case into four buckets — right/wrong citation,
