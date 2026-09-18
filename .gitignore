@@ -18,4 +18,7 @@ venv/
 
 # Wrangler / logs
 .wrangler/
-*.logworker/src/data/version.ts
+*.log
+
+# Generated build-time stamp (rebuilt on every deploy)
+worker/src/data/version.ts
