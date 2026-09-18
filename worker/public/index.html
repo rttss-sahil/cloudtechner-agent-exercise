@@ -76,6 +76,7 @@
         });
         document.getElementById("panel-ask").classList.toggle("hidden", name !== "ask");
         document.getElementById("panel-rb").classList.toggle("hidden", name !== "rb");
+        if (name === "rb") loadDocs();
       }
       document.querySelectorAll(".tab").forEach((b) =>
         b.addEventListener("click", () => showTab(b.dataset.tab))
