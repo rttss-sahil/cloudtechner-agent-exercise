@@ -1,0 +1,21 @@
+# Node / Worker deps
+node_modules/
+worker/node_modules/
+worker/.wrangler/
+worker/.dev.vars
+
+# Python artifacts
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# OS / editor
+.DS_Store
+*.swp
+.idea/
+.vscode/
+
+# Wrangler / logs
+.wrangler/
+*.log

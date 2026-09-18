@@ -1,0 +1,19 @@
+{
+  "name": "cloudtechner-rag-worker",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Stateless Cloudflare Worker port of the CloudTechner runbooks RAG agent",
+  "scripts": {
+    "build:data": "node scripts/build-data.mjs ../runbooks src/data/runbooks.ts",
+    "parity": "npm run build:data && node --experimental-strip-types scripts/parity.mjs",
+    "dev": "npm run build:data && wrangler dev",
+    "typecheck": "tsc --noEmit",
+    "deploy": "npm run build:data && wrangler deploy"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260918.0",
+    "typescript": "^5.6.0",
+    "wrangler": "^4.0.0"
+  }
+}

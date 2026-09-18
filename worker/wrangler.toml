@@ -1,0 +1,13 @@
+name = "cloudtechner-rag"
+main = "src/index.ts"
+compatibility_date = "2026-09-18"
+
+# Stateless by design: the runbooks corpus is bundled into the Worker build
+# (src/data/runbooks.ts). No KV, no D1, no runtime storage.
+
+[assets]
+directory = "./public"
+binding = "ASSETS"
+
+[observability]
+enabled = true

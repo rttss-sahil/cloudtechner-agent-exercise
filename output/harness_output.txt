@@ -1,0 +1,35 @@
+==========================================================================
+CLOUDTECHNER AGENT SETUP EXERCISE — HARNESS REPORT
+==========================================================================
+  #  question                                                    outcome                       
+--------------------------------------------------------------------------
+  1  checkout-api is running hot on CPU - what should I chec...  PASS: cited right doc(s)      
+      (expected=RB-001, cited=RB-001, conf=high)
+  2  We're seeing 'too many connections' errors on checkout-...  PASS: cited right doc(s)      
+      (expected=RB-002, cited=RB-002, conf=high)
+  3  How do I safely roll back checkout-api to a previous ve...  PASS: cited right doc(s)      
+      (expected=RB-005, cited=RB-005, conf=medium)
+  4  We had a checkout-api incident on 2026-08-10 - what was...  PASS: cited right doc(s)      
+      (expected=RB-011, cited=RB-011, conf=high)
+  5  What's our policy for communicating an incident to cust...  PASS: cited right doc(s)      
+      (expected=RB-012, cited=RB-012, conf=medium)
+  6  payments-api is running hot on CPU - what should I chec...  PASS: cited right doc(s)      
+      (expected=RB-003, cited=RB-003, conf=high)
+  7  We're seeing 'too many connections' errors on payments-...  PASS: cited right doc(s)      
+      (expected=RB-004, cited=RB-004, conf=high)
+  8  inventory-api is running hot on CPU - what should I che...  PASS: cited right doc(s)      
+      (expected=RB-008, cited=RB-008, conf=medium)
+  9  How do I spin up a local redis for development?             PASS: correctly no-match      
+      (cited=-, conf=no match)
+ 10  What dress code should engineers follow on casual Fridays?  PASS: correctly no-match      
+      (cited=-, conf=no match)
+ 11  What is our process for declaring a severity-1 incident?    PASS: cited right doc(s)      
+      (expected=RB-010, cited=RB-010, conf=high)
+--------------------------------------------------------------------------
+Bucket counts:
+  PASS: cited right doc(s)         9
+  FAIL: cited wrong doc(s)         0
+  PASS: correctly no-match         2
+  FAIL: wrong no-match (doc applied)   0
+
+SCORE: 11/11 cases passed (100.0%)

@@ -1,0 +1,64 @@
+[
+  {
+    "question": "checkout-api is running hot on CPU - what should I check first?",
+    "expected": ["RB-001"],
+    "source": "official"
+  },
+  {
+    "question": "We're seeing 'too many connections' errors on checkout-api - what's the likely cause?",
+    "expected": ["RB-002"],
+    "source": "official",
+    "note": "Citing RB-012 as a secondary source is acceptable per the prompt, not required."
+  },
+  {
+    "question": "How do I safely roll back checkout-api to a previous version?",
+    "expected": ["RB-005"],
+    "source": "official"
+  },
+  {
+    "question": "We had a checkout-api incident on 2026-08-10 - what was the root cause and how was it fixed?",
+    "expected": ["RB-011"],
+    "source": "official"
+  },
+  {
+    "question": "What's our policy for communicating an incident to customers?",
+    "expected": ["RB-012"],
+    "source": "official"
+  },
+  {
+    "question": "payments-api is running hot on CPU - what should I check first?",
+    "expected": ["RB-003"],
+    "source": "self-test",
+    "note": "Near-duplicate TRAP: RB-001 has the same structure but is about checkout-api. Agent must not cite it."
+  },
+  {
+    "question": "We're seeing 'too many connections' errors on payments-api - what's the likely cause?",
+    "expected": ["RB-004"],
+    "source": "self-test",
+    "note": "Near-duplicate TRAP of RB-002."
+  },
+  {
+    "question": "inventory-api is running hot on CPU - what should I check first?",
+    "expected": ["RB-008"],
+    "source": "self-test",
+    "note": "Near-duplicate TRAP: answer is the inventory CPU runaway-query doc, not the checkout/payments CPU docs."
+  },
+  {
+    "question": "How do I spin up a local redis for development?",
+    "expected": null,
+    "source": "self-test",
+    "note": "No-match case: no runbook covers this. Agent must return confidence=no match, empty citations."
+  },
+  {
+    "question": "What dress code should engineers follow on casual Fridays?",
+    "expected": null,
+    "source": "self-test",
+    "note": "No-match case, clearly out of corpus scope."
+  },
+  {
+    "question": "What is our process for declaring a severity-1 incident?",
+    "expected": ["RB-010"],
+    "source": "self-test",
+    "note": "General process doc, positive look-up."
+  }
+]

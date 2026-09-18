@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CloudTechner — Runbooks Q&amp;A</title>
+  <style>
+    :root { --bg: #0f1521; --card: #171f2e; --ink: #e7ecf3; --dim: #9aa7bd; --acc: #38bdf8; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font: 15px/1.5 ui-sans-serif, system-ui, sans-serif; background: var(--bg); color: var(--ink); }
+    main { max-width: 720px; margin: 0 auto; padding: 48px 20px; }
+    h1 { font-size: 22px; margin-bottom: 4px; }
+    p.sub { color: var(--dim); margin-top: 0; }
+    form { display: flex; gap: 8px; margin: 20px 0; }
+    input { flex: 1; padding: 10px 12px; border-radius: 8px; border: 1px solid #2a3e55; background: var(--card); color: var(--ink); }
+    input:focus { border-color: var(--acc); outline: none; }
+    button { padding: 10px 16px; border: 0; border-radius: 8px; background: var(--acc); color: #04121b; font-weight: 600; cursor: pointer; }
+    .card { background: var(--card); border: 1px solid #26324a; border-radius: 10px; padding: 14px 16px; margin-top: 12px; }
+    .card .conf { font-size: 12px; color: var(--dim); text-transform: uppercase; letter-spacing: .05em; }
+    .badge { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 12px; background: #1e3a5f; color: #9bd0ff; margin-left: 6px; }
+    .cite { font-family: ui-monospace, monospace; font-size: 13px; color: var(--acc); }
+    .err { color: #fca5a5; }
+    .hidden { display: none; }
+    #docs { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; margin-top: 14px; }
+    .chip { background: var(--card); border: 1px solid #26324a; border-radius: 8px; padding: 8px 10px; cursor: pointer; color: var(--ink); font-size: 13px; text-align: left; }
+    .chip:hover { border-color: var(--acc); }
+    .chip small { display: block; color: var(--dim); }
+    #doc-view pre { white-space: pre-wrap; font-size: 12px; background: var(--card); border: 1px solid #26324a; border-radius: 10px; padding: 14px 16px; overflow: auto; max-height: 420px; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>CloudTechner — Runbooks Q&amp;A</h1>
+    <p class="sub">Stateless on Cloudflare Workers. ASK a question; the answer is grounded in the bundled runbooks or returns <code>no match</code>.</p>
+
+    <form id="f">
+      <input id="q" placeholder='e.g. checkout-api is running hot on CPU - what should I check first?' autofocus />
+      <button type="submit">Ask</button>
+      <button type="button" id="t" style="background:#243247;color:#e7ecf3">Runbooks</button>
+    </form>
+
+    <div id="docs" class="hidden"></div>
+    <div id="doc-view" class="hidden"></div>
+
+    <div id="out"></div>
+
+    <script>
+      const f = document.getElementById("f");
+      const q = document.getElementById("q");
+      const out = document.getElementById("out");
+      const t = document.getElementById("t");
+      const docsEl = document.getElementById("docs");
+      const docView = document.getElementById("doc-view");
+      let listLoaded = false;
+
+      function esc(s) { return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+
+      async function loadDocs() {
+        docsEl.classList.toggle("hidden");
+        if (listLoaded) return;
+        const r = await fetch("/api/docs");
+        const list = await r.json();
+        listLoaded = true;
+        docsEl.innerHTML = list.map((d) =>
+          `<button class="chip" id="doc-${d.id}">${esc(d.id)}<small>${esc(d.title || d.name)}</small></button>`
+        ).join("");
+        for (const d of list) {
+          document.getElementById(`doc-${d.id}`).addEventListener("click", () => showDoc(d.id));
+        }
+      }
+
+      async function showDoc(id) {
+        const r = await fetch(`/api/docs/${id}`);
+        const d = await r.json();
+        if (!r.ok) { docView.innerHTML = `<div class="card err">${esc(d.error || "not found")}</div>`; }
+        else {
+          docView.classList.remove("hidden");
+          docView.innerHTML = `<h3 style="display:flex;justify-content:space-between;align-items:center"><span>${esc(d.title)}</span><span class="cite">${esc(d.id)}</span></h3><pre>${esc(d.text)}</pre>`;
+        }
+        docView.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+
+      t.addEventListener("click", loadDocs);
+
+      async function ask(question) {
+        out.innerHTML = '<div class="card">Thinking…</div>';
+        try {
+          const r = await fetch("/api/answer", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ question }),
+          });
+          const d = await r.json();
+          if (!r.ok) throw new Error(d.error || r.statusText);
+          const conf = d.confidence === "no match"
+            ? '<span class="badge">no match</span>'
+            : `<span class="badge">${d.confidence}</span>`;
+          const cites = d.cited_doc_ids.length
+            ? `<div class="cite">Cited: ${d.cited_doc_ids.map((c) => `<a href="#" class="cite-link" data-id="${c}">${c}</a>`).join(", ")}</div>`
+            : "";
+          out.innerHTML = `<div class="card"><div class="conf">confidence ${conf}</div>${cites}<div style="margin-top:6px"></div>${esc(d.answer)}</div>`;
+        } catch (e) {
+          out.innerHTML = `<div class="card err">${esc(e.message)}</div>`;
+        }
+      }
+
+      out.addEventListener("click", (e) => {
+        const a = e.target.closest(".cite-link");
+        if (a) { e.preventDefault(); showDoc(a.dataset.id); }
+      });
+
+      f.addEventListener("submit", (e) => { e.preventDefault(); if (q.value.trim()) ask(q.value.trim()); });
+      if (q.value.trim()) ask(q.value.trim());
+    </script>
+  </main>
+</body>
+</html>
