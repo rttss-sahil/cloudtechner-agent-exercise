@@ -30,6 +30,7 @@ Everything ships in three places: the **repo** (source + docs), the **live Worke
 - `GET /` — UI (ask a question, browse the 12 mock runbooks, click citations to open docs)
 - `POST /api/answer` — `{"question": "…"}` → `{answer, cited_doc_ids, confidence}`
 - `GET /api/docs` / `GET /api/docs/:id` — corpus list / single runbook
+- `GET /api/version` — `{commit, deployedAt, engine, corpus}` to correlate the live deploy to the exact repo revision (also `X-Deploy-Commit` response header on `/api/*`)
 - `GET /api/answer?q=…&debug=1` — plus ranked retrieval diagnostics
 - Repo link is surfaced in the UI footer of the page.
 
