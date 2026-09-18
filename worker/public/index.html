@@ -11,7 +11,12 @@
     main { max-width: 720px; margin: 0 auto; padding: 48px 20px; }
     h1 { font-size: 22px; margin-bottom: 4px; }
     p.sub { color: var(--dim); margin-top: 0; }
-    form { display: flex; gap: 8px; margin: 20px 0; }
+    .tabs { display: flex; gap: 4px; margin: 20px 0 0; border-bottom: 1px solid #26324a; }
+    .tab { background: none; border: 0; border-bottom: 2px solid transparent; color: var(--dim); padding: 8px 14px; font-size: 14px; font-weight: 600; cursor: pointer; border-radius: 0; margin-bottom: -1px; }
+    .tab:hover { color: var(--ink); }
+    .tab.active { color: var(--ink); border-bottom-color: var(--acc); }
+    .panel { margin-top: 16px; }
+    form { display: flex; gap: 8px; margin: 0; }
     input { flex: 1; padding: 10px 12px; border-radius: 8px; border: 1px solid #2a3e55; background: var(--card); color: var(--ink); }
     input:focus { border-color: var(--acc); outline: none; }
     button { padding: 10px 16px; border: 0; border-radius: 8px; background: var(--acc); color: #04121b; font-weight: 600; cursor: pointer; }
@@ -21,7 +26,7 @@
     .cite { font-family: ui-monospace, monospace; font-size: 13px; color: var(--acc); }
     .err { color: #fca5a5; }
     .hidden { display: none; }
-    #docs { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; margin-top: 14px; }
+    #docs { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
     .chip { background: var(--card); border: 1px solid #26324a; border-radius: 8px; padding: 8px 10px; cursor: pointer; color: var(--ink); font-size: 13px; text-align: left; }
     .chip:hover { border-color: var(--acc); }
     .chip small { display: block; color: var(--dim); }
@@ -34,30 +39,49 @@
     <p class="sub">Stateless on Cloudflare Workers. ASK a question; the answer is grounded in the bundled runbooks or returns <code>no match</code>.
       <a href="https://github.com/rttss-sahil/cloudtechner-agent-exercise" target="_blank" rel="noopener" style="color:var(--acc)">View the source repo →</a></p>
 
-    <form id="f">
-      <input id="q" placeholder='e.g. checkout-api is running hot on CPU - what should I check first?' autofocus />
-      <button type="submit">Ask</button>
-      <button type="button" id="t" style="background:#243247;color:#e7ecf3">Runbooks</button>
-    </form>
+    <nav class="tabs" role="tablist">
+      <button type="button" class="tab active" data-tab="ask" role="tab" aria-selected="true" aria-controls="panel-ask">Ask</button>
+      <button type="button" class="tab" data-tab="rb" role="tab" aria-selected="false" aria-controls="panel-rb">Runbooks</button>
+    </nav>
 
-    <div id="docs" class="hidden"></div>
-    <div id="doc-view" class="hidden"></div>
+    <section class="panel" id="panel-ask" role="tabpanel">
+      <form id="f">
+        <input id="q" placeholder='e.g. checkout-api is running hot on CPU - what should I check first?' autofocus />
+        <button type="submit">Ask</button>
+      </form>
+      <div id="out"></div>
+    </section>
 
-    <div id="out"></div>
+    <section class="panel hidden" id="panel-rb" role="tabpanel">
+      <p class="sub" style="margin:0 0 8px">All bundled runbooks — click one to read it.</p>
+      <div id="docs"></div>
+      <div id="doc-view" class="hidden"></div>
+    </section>
 
     <script>
       const f = document.getElementById("f");
       const q = document.getElementById("q");
       const out = document.getElementById("out");
-      const t = document.getElementById("t");
       const docsEl = document.getElementById("docs");
       const docView = document.getElementById("doc-view");
       let listLoaded = false;
 
       function esc(s) { return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
 
+      function showTab(name) {
+        document.querySelectorAll(".tab").forEach((b) => {
+          const on = b.dataset.tab === name;
+          b.classList.toggle("active", on);
+          b.setAttribute("aria-selected", on);
+        });
+        document.getElementById("panel-ask").classList.toggle("hidden", name !== "ask");
+        document.getElementById("panel-rb").classList.toggle("hidden", name !== "rb");
+      }
+      document.querySelectorAll(".tab").forEach((b) =>
+        b.addEventListener("click", () => showTab(b.dataset.tab))
+      );
+
       async function loadDocs() {
-        docsEl.classList.toggle("hidden");
         if (listLoaded) return;
         const r = await fetch("/api/docs");
         const list = await r.json();
@@ -71,6 +95,7 @@
       }
 
       async function showDoc(id) {
+        showTab("rb");
         const r = await fetch(`/api/docs/${id}`);
         const d = await r.json();
         if (!r.ok) { docView.innerHTML = `<div class="card err">${esc(d.error || "not found")}</div>`; }
@@ -80,8 +105,6 @@
         }
         docView.scrollIntoView({ behavior: "smooth", block: "start" });
       }
-
-      t.addEventListener("click", loadDocs);
 
       async function ask(question) {
         out.innerHTML = '<div class="card">Thinking…</div>';
