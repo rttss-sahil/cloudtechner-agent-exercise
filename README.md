@@ -1,7 +1,8 @@
 # CloudTechner — Agent Setup Exercise
 
 Q&A agent over a `runbooks/` corpus + evaluation harness. Pure Python stdlib, no
-install required, runs on Python 3.9+.
+install required, runs on Python 3.9+ (`from __future__ import annotations`
+keeps the `X | None` / `list[str]` syntax safe — verified against Python 3.9.6).
 
 ```
 answer_question(question: str) -> dict
@@ -108,7 +109,7 @@ changes needed.
 
 ## Requirements
 
-Python 3.9+ standard library only. No pip install, no model downloads, no network.
+Python 3.9+ standard library only (`from __future__ import annotations`, verified on 3.9.6). No pip install, no model downloads, no network.
 
 ---
 

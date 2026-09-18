@@ -1,6 +1,6 @@
 // Hybrid retrieval — direct port of cloudtech_rag/retrieval.py (Python).
 // Same math: TF-IDF cosine + token Jaccard + char 3-gram Jaccard, then a
-// service-grounding gate. Kept deterministic so Worker results == local Python
+// service-grounding penalty. Kept deterministic so Worker results == local Python
 // results for the same corpus and thresholds.
 
 import {

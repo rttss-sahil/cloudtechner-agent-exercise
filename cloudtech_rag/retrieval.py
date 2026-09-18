@@ -6,7 +6,7 @@ Design rationale (see WRITEUP.md for full detail):
   differences and tend to match the closest-sounding (wrong) doc.
 - A hybrid lexical score is precise: it rewards literal keyword overlap while a
   character-trigram Jaccard stays robust to small wording differences.
-- An explicit *service-grounding gate* enforces "you asked about checkout-api, the
+- An explicit *service-grounding penalty* enforces "you asked about checkout-api, the
   answer must actually be about checkout-api" — the core defense against the
   wrong-service near-duplicate traps. It needs no fixed list of services: it just
   compares hyphenated service-like tokens in the question vs. each doc.

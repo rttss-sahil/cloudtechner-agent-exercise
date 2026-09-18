@@ -7,7 +7,7 @@ a full pass.
 
 Usage:
     python3 eval_harness.py            # evaluate all cases in examples.json
-    python3 eval_harness.py -q "..."   # append an ad-hoc question (no truth)
+    python3 eval_harness.py --ad-hoc "runbook for a redis outage?"   # append an ad-hoc question (no truth)
 """
 
 from harness import main

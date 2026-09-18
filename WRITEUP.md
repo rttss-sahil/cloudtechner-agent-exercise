@@ -35,7 +35,7 @@ words don't — but here the traps are the opposite: **the words are nearly
 identical, and the difference is an entity** (service name or failure mode).
 Under cosine-in-embedding-space those near-duplicates collapse together, which is
 precisely what tends to make a naive RAG answer cite the wrong-service doc. A
-lexical scorer + entity gate decisively separates them, and does so with zero
+lexical scorer + service-grounding penalty decisively separates them, and does so with zero
 dependencies and full transparency about *why* a doc was chosen or rejected
 (diagnostics are attached to every ranked doc).
 
