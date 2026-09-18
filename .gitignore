@@ -18,4 +18,4 @@ venv/
 
 # Wrangler / logs
 .wrangler/
-*.log
+*.logworker/src/data/version.ts
